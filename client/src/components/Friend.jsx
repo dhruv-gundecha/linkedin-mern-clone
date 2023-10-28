@@ -22,6 +22,10 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const isFriend = friends.find((friend) => friend._id === friendId);
 
   const patchFriend = async () => {
+    if (friendId === _id) {
+      // Prevent adding or removing yourself as a friend
+      return;
+    }
     const response = await fetch(
       `http://localhost:3001/users/${_id}/${friendId}`,
       {
