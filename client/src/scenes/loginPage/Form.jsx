@@ -20,12 +20,20 @@ const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
   lastName: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
-  password: yup.string().required("required"),
+  password: yup
+    .string()
+    .required("Required")
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      "Password must be at least 8 characters long and include one number and one special character"
+    ),
   location: yup.string().required("required"),
   occupation: yup.string().required("required"),
   skills: yup.string().required("required"),
+  experience: yup.string().required("required"),
+  education: yup.string().required("required"),
   picture: yup.string().required("required"),
-  
+
 });
 
 const loginSchema = yup.object().shape({
@@ -40,7 +48,9 @@ const initialValuesRegister = {
   password: "",
   location: "",
   occupation: "",
-  skills:"",
+  skills: "",
+  experience: "",
+  education: "",
   picture: "",
 };
 
@@ -82,22 +92,29 @@ const Form = () => {
   };
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch("http://localhost:3001/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    });
-    const loggedIn = await loggedInResponse.json();
-    onSubmitProps.resetForm();
-    if (loggedIn) {
-      dispatch(
-        setLogin({
-          user: loggedIn.user,
-          token: loggedIn.token,
-        })
-      );
-      navigate("/home");
-    }
+      const loggedInResponse = await fetch("http://localhost:3001/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      if(loggedInResponse.status===400){
+        alert("invalid credentials");
+      }
+      const loggedIn = await loggedInResponse.json();
+      onSubmitProps.resetForm();
+      if (loggedIn) {
+        dispatch(
+          setLogin({
+            user: loggedIn.user,
+            token: loggedIn.token,
+          })
+        );
+        navigate("/home");
+      }
+      else{
+        console.log("bye");
+        alert("invalid credentials");
+      }
   };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
@@ -186,6 +203,26 @@ const Form = () => {
                   helperText={touched.skills && errors.skills}
                   sx={{ gridColumn: "span 4" }}
                 />
+                <TextField
+                  label="Experience"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.experience}
+                  name="experience"
+                  error={Boolean(touched.experience) && Boolean(errors.experience)}
+                  helperText={touched.experience && errors.experience}
+                  sx={{ gridColumn: "span 4" }}
+                />
+                <TextField
+                  label="Education"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.education}
+                  name="education"
+                  error={Boolean(touched.education) && Boolean(errors.education)}
+                  helperText={touched.education && errors.education}
+                  sx={{ gridColumn: "span 4" }}
+                />
                 <Box
                   gridColumn="span 4"
                   border={`1px solid ${palette.neutral.medium}`}
@@ -243,6 +280,21 @@ const Form = () => {
               helperText={touched.password && errors.password}
               sx={{ gridColumn: "span 4" }}
             />
+            {isRegister && (
+  <>
+    <TextField
+      label="Re-enter Password"
+      type="password"
+      onBlur={handleBlur}
+      onChange={handleChange}
+      value={values.reEnterPassword}
+      name="reEnterPassword"
+      error={Boolean(touched.reEnterPassword) && Boolean(errors.reEnterPassword)}
+      helperText={touched.reEnterPassword && errors.reEnterPassword}
+      sx={{ gridColumn: "span 4" }}
+    />
+    </>
+)}
           </Box>
 
           {/* BUTTONS */}

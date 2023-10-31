@@ -29,19 +29,20 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    friends: {
+    connections: {
       type: Array,
       default: [],
     },
     location: String,
     occupation: String,
     skills: String,
+    experience: String,
+    education: String,
     viewedProfile: Number,
     impressions: Number,
   },
   { timestamps: true }
 );
-console.log(UserSchema.get("skills"));
 
 const User = mongoose.model("User", UserSchema);
 export default User;

@@ -17,15 +17,12 @@ import WorkRoundedIcon from "@mui/icons-material/WorkRounded";
 import {
   Search,
   Message,
-  DarkMode,
-  LightMode,
   Notifications,
-  Help,
   Menu,
   Close,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { setMode, setLogout } from "state";
+import { setLogout } from "state";
 import FlexBetween from "components/FlexBetween";
 
 const Navbar = () => {
@@ -36,7 +33,6 @@ const Navbar = () => {
 
   const theme = useTheme();
   const neutralLight = theme.palette.neutral.light;
-  const dark = theme.palette.neutral.dark;
   const background = theme.palette.background.default;
   const alt = theme.palette.background.alt;
 
@@ -64,116 +60,63 @@ const Navbar = () => {
           </FlexBetween>
         )
         }
-        
+
       </FlexBetween>
 
       {/* DESKTOP NAV */
-      isNonMobileScreens ? (
-        <FlexBetween gap="2rem">
-          <IconButton onClick={() => dispatch(setMode())}>
-            {theme.palette.mode === "dark" ? (
-              <DarkMode sx={{ fontSize: "25px" }} />
-            ) : (
-              <LightMode sx={{ color: dark, fontSize: "25px" }} />
-            )}
-          </IconButton>
-          <div className="icon-text-container">
-            <HomeRoundedIcon sx={{ fontSize: "25px" }} />
-            <span>Home</span>
-          </div>
-          <div className="icon-text-container">
-            <center>
-            <PeopleRoundedIcon sx={{ fontSize: "25px" }} />
-            <center><span>My Connections</span></center>
-            </center>
-          </div>
-          <div className="icon-text-container">
-            <WorkRoundedIcon sx={{ fontSize: "25px" }} />
-            <span>Jobs</span>
-          </div>
-          <div className="icon-text-container">
-            <Message sx={{ fontSize: "25px" }} />
-            <span>Messaging</span>
-          </div>
-          <div className="icon-text-container">
-            <Notifications sx={{ fontSize: "25px" }} />
-            <span>Notifications</span>
-          </div>
-          <FormControl variant="standard" value={fullName}>
-            <Select
-              value={fullName}
-              sx={{
-                backgroundColor: neutralLight,
-                width: "150px",
-                borderRadius: "0.25rem",
-                p: "0.25rem 1rem",
-                "& .MuiSvgIcon-root": {
-                  pr: "0.25rem",
-                  width: "3rem",
-                },
-                "& .MuiSelect-select:focus": {
-                  backgroundColor: neutralLight,
-                },
-              }}
-              input={<InputBase />}
-            >
-              <MenuItem value={fullName}>
-                <Typography>{fullName}</Typography>
-              </MenuItem>
-              <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
-            </Select>
-          </FormControl>
-        </FlexBetween>
-      ) : (
-        <IconButton
-          onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
-        >
-          <Menu />
-        </IconButton>
-      )}
-
-      {/* MOBILE NAV */
-      !isNonMobileScreens && isMobileMenuToggled && (
-        <Box
-          position="fixed"
-          right="0"
-          bottom="0"
-          height="100%"
-          zIndex="10"
-          maxWidth="500px"
-          minWidth="300px"
-          backgroundColor={background}
-        >
-          {/* CLOSE ICON */}
-          <Box display="flex" justifyContent="flex-end" p="1rem">
-            <IconButton
-              onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
-            >
-              <Close />
-            </IconButton>
-          </Box>
-
-          {/* MENU ITEMS */}
-          <FlexBetween
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="center"
-            gap="3rem"
-          >
-            <IconButton
-              onClick={() => dispatch(setMode())}
-              sx={{ fontSize: "25px" }}
-            >
-              {theme.palette.mode === "dark" ? (
-                <DarkMode sx={{ fontSize: "25px" }} />
-              ) : (
-                <LightMode sx={{ color: dark, fontSize: "25px" }} />
-              )}
-            </IconButton>
-            <Message sx={{ fontSize: "25px" }} />
-            <Notifications sx={{ fontSize: "25px" }} />
-            <Help sx={{ fontSize: "25px" }} />
+        isNonMobileScreens ? (
+          <FlexBetween gap="2rem">
+            <div className="icon-text-container">
+              <center>
+                <a href="/home">
+                  <HomeRoundedIcon sx={{ fontSize: "25px" }} />
+                  <center><span>Home</span></center>
+                </a>
+              </center>
+            </div>
+            <div className="icon-text-container">
+              <center>
+                <a href="/home/connections">
+                  <PeopleRoundedIcon sx={{ fontSize: "25px" }} />
+                  <center><span>My Connections</span></center>
+                </a>
+              </center>
+            </div>
+            <div className="icon-text-container">
+              <center>
+                <a href="/home/jobs">
+                
+                  <WorkRoundedIcon sx={{ fontSize: "25px" }} />
+                  <center><span>Jobs</span></center>
+                  </a>
+              </center>
+            </div>
+            <div className="icon-text-container">
+              <center>
+                <div style={{
+                  cursor: "pointer",
+                  color: "#551A8B",
+                  textDecoration: "underline",
+                  display: "inline",
+                }}>
+                  <Message sx={{ fontSize: "25px" }} />
+                  <center><span>Messages</span></center>
+                </div>
+              </center>
+            </div>
+            <div className="icon-text-container">
+              <center>
+                <div style={{
+                  cursor: "pointer",
+                  color: "#551A8B",
+                  textDecoration: "underline",
+                  display: "inline",
+                }}>
+                  <Notifications sx={{ fontSize: "25px" }} />
+                  <center><span>Notifications</span></center>
+                </div>
+              </center>
+            </div>
             <FormControl variant="standard" value={fullName}>
               <Select
                 value={fullName}
@@ -195,14 +138,83 @@ const Navbar = () => {
                 <MenuItem value={fullName}>
                   <Typography>{fullName}</Typography>
                 </MenuItem>
-                <MenuItem onClick={() => dispatch(setLogout())}>
-                  Log Out
-                </MenuItem>
+                <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
               </Select>
             </FormControl>
           </FlexBetween>
-        </Box>
-      )}
+        ) : (
+          <IconButton
+            onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
+          >
+            <Menu />
+          </IconButton>
+        )}
+
+      {/* MOBILE NAV */
+        !isNonMobileScreens && isMobileMenuToggled && (
+          <Box
+            position="fixed"
+            right="0"
+            bottom="0"
+            height="100%"
+            zIndex="10"
+            maxWidth="500px"
+            minWidth="300px"
+            backgroundColor={background}
+          >
+            {/* CLOSE ICON */}
+            <Box display="flex" justifyContent="flex-end" p="1rem">
+              <IconButton
+                onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
+              >
+                <Close />
+              </IconButton>
+            </Box>
+
+            {/* MENU ITEMS */}
+            <FlexBetween
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
+              gap="3rem"
+            >
+              <HomeRoundedIcon sx={{ fontSize: "25px" }} />
+              <PeopleRoundedIcon sx={{ fontSize: "25px" }} />
+              <WorkRoundedIcon sx={{ fontSize: "25px" }} />
+              <Message sx={{ fontSize: "25px" }} />
+              <Notifications sx={{ fontSize: "25px" }} />
+              
+              
+              <FormControl variant="standard" value={fullName}>
+                <Select
+                  value={fullName}
+                  sx={{
+                    backgroundColor: neutralLight,
+                    width: "150px",
+                    borderRadius: "0.25rem",
+                    p: "0.25rem 1rem",
+                    "& .MuiSvgIcon-root": {
+                      pr: "0.25rem",
+                      width: "3rem",
+                    },
+                    "& .MuiSelect-select:focus": {
+                      backgroundColor: neutralLight,
+                    },
+                  }}
+                  input={<InputBase />}
+                >
+                  <MenuItem value={fullName}>
+                    <Typography>{fullName}</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={() => dispatch(setLogout())}>
+                    Log Out
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </FlexBetween>
+          </Box>
+        )}
     </FlexBetween>
   );
 };

@@ -4,6 +4,9 @@ import {
   LocationOnOutlined,
   WorkOutlineOutlined,
 } from "@mui/icons-material";
+import InstagramIcon from '@mui/icons-material/Instagram';
+import SchoolIcon from '@mui/icons-material/School';
+import BusinessIcon from '@mui/icons-material/Business';
 import { Box, Typography, Divider, useTheme } from "@mui/material";
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
@@ -44,9 +47,11 @@ const UserWidget = ({ userId, picturePath }) => {
     location,
     occupation,
     skills,
+    experience,
+    education,
     viewedProfile,
     impressions,
-    friends,
+    connections,
   } = user;
 
   return (
@@ -73,7 +78,7 @@ const UserWidget = ({ userId, picturePath }) => {
             >
               {firstName} {lastName}
             </Typography>
-            <Typography color={medium}>{friends.length} friends</Typography>
+            <Typography color={medium}>{connections.length} connections</Typography>
           </Box>
         </FlexBetween>
         <ManageAccountsOutlined />
@@ -95,6 +100,14 @@ const UserWidget = ({ userId, picturePath }) => {
           <img src="/images/icons8-skills-50.png" alt="skills" height="28px" width="28px"/>
           <Typography color={medium}>{skills}</Typography>
         </Box>
+        <Box display="flex" alignItems="center" gap="1rem">
+          <BusinessIcon sx={{ fontSize: "25px" }}/>
+          <Typography color={medium}>{experience}</Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gap="1rem">
+          <SchoolIcon sx={{ fontSize: "25px" }}/>
+          <Typography color={medium}>{education}</Typography>
+        </Box>
       </Box>
 
       <Divider />
@@ -102,13 +115,13 @@ const UserWidget = ({ userId, picturePath }) => {
       {/* THIRD ROW */}
       <Box p="1rem 0">
         <FlexBetween mb="0.5rem">
-          <Typography color={medium}>Who's viewed your profile</Typography>
+          <Typography color={medium}>Profile Views</Typography>
           <Typography color={main} fontWeight="500">
             {viewedProfile}
           </Typography>
         </FlexBetween>
         <FlexBetween>
-          <Typography color={medium}>Impressions of your post</Typography>
+          <Typography color={medium}>Post Impressions</Typography>
           <Typography color={main} fontWeight="500">
             {impressions}
           </Typography>
@@ -138,12 +151,12 @@ const UserWidget = ({ userId, picturePath }) => {
 
         <FlexBetween gap="1rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/linkedin.png" alt="linkedin" />
+            < InstagramIcon sx={{fontSize: "25px"}} />
             <Box>
               <Typography color={main} fontWeight="500">
-                Linkedin
+                Instagram
               </Typography>
-              <Typography color={medium}>Network Platform</Typography>
+              <Typography color={medium}>Social Platform</Typography>
             </Box>
           </FlexBetween>
           <EditOutlined sx={{ color: main }} />

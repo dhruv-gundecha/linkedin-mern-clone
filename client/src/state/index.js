@@ -22,11 +22,11 @@ export const authSlice = createSlice({
       state.user = null;
       state.token = null;
     },
-    setFriends: (state, action) => {
+    setConnections: (state, action) => {
       if (state.user) {
-        state.user.friends = action.payload.friends;
+        state.user.connections = action.payload.connections;
       } else {
-        console.error("user friends non-existent :(");
+        console.error("user connections non-existent :(");
       }
     },
     setPosts: (state, action) => {
@@ -39,9 +39,19 @@ export const authSlice = createSlice({
       });
       state.posts = updatedPosts;
     },
+    setJobs: (state, action) => {
+      state.jobs = action.payload.jobs;
+    },
+    setJob: (state, action) => {
+      const updatedJobs = state.jobs.map((job) => {
+        if (job._id === action.payload.job._id) return action.payload.job;
+        return job;
+      });
+      state.jobs = updatedJobs;
+    },
   },
 });
 
-export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost } =
+export const { setMode, setLogin, setLogout, setConnections, setPosts, setPost, setJobs, setJob } =
   authSlice.actions;
 export default authSlice.reducer;

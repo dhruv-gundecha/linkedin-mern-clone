@@ -1,30 +1,30 @@
 import { Box, Typography, useTheme } from "@mui/material";
-import Friend from "components/Friend";
+import Connection from "components/Connection";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setFriends } from "state";
+import { setConnections } from "state";
 
-const FriendListWidget = ({ userId }) => {
+const ConnectionListWidget = ({ userId }) => {
   const dispatch = useDispatch();
   const { palette } = useTheme();
   const token = useSelector((state) => state.token);
-  const friends = useSelector((state) => state.user.friends);
+  const connections = useSelector((state) => state.user.connections);
 
-  const getFriends = async () => {
+  const getConnections = async () => {
     const response = await fetch(
-      `http://localhost:3001/users/${userId}/friends`,
+      `http://localhost:3001/users/${userId}/connections`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       }
     );
     const data = await response.json();
-    dispatch(setFriends({ friends: data }));
+    dispatch(setConnections({ connections: data }));
   };
 
   useEffect(() => {
-    getFriends();
+    getConnections();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -35,16 +35,16 @@ const FriendListWidget = ({ userId }) => {
         fontWeight="500"
         sx={{ mb: "1.5rem" }}
       >
-        Friend List
+        Connections List
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {friends.map((friend) => (
-          <Friend
-            key={friend._id}
-            friendId={friend._id}
-            name={`${friend.firstName} ${friend.lastName}`}
-            subtitle={friend.occupation}
-            userPicturePath={friend.picturePath}
+        {connections.map((connection) => (
+          <Connection
+            key={connection._id}
+            connectionId={connection._id}
+            name={`${connection.firstName} ${connection.lastName}`}
+            subtitle={connection.occupation}
+            userPicturePath={connection.picturePath}
           />
         ))}
       </Box>
@@ -52,4 +52,4 @@ const FriendListWidget = ({ userId }) => {
   );
 };
 
-export default FriendListWidget;
+export default ConnectionListWidget;

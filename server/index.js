@@ -11,7 +11,9 @@ import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import postRoutes from "./routes/posts.js";
+import jobRoutes from "./routes/jobs.js";
 import { register } from "./controllers/auth.js";
+import { createJob } from "./controllers/jobs.js";
 import { createPost } from "./controllers/posts.js";
 import { verifyToken } from "./middleware/auth.js";
 
@@ -43,11 +45,13 @@ const upload = multer({ storage });
 /* ROUTES WITH FILES */
 app.post("/auth/register", upload.single("picture"), register);
 app.post("/posts", verifyToken, upload.single("picture"), createPost);
+app.post("/jobs", verifyToken, upload.single("picture"), createJob);
 
 /* ROUTES */
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
+app.use("/jobs", jobRoutes);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 6001;
@@ -59,9 +63,5 @@ mongoose
   })
   .then(() => {
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
-
-    /* ADD DATA ONE TIME */
-    // User.insertMany(users);
-    // Post.insertMany(posts);
   })
   .catch((error) => console.log(`${error} did not connect`));

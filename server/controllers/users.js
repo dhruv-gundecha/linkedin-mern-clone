@@ -11,52 +11,52 @@ export const getUser = async (req, res) => {
   }
 };
 
-export const getUserFriends = async (req, res) => {
+export const getUserConnections = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id);
 
-    const friends = await Promise.all(
-      user.friends.map((id) => User.findById(id))
+    const connections = await Promise.all(
+      user.connections.map((id) => User.findById(id))
     );
-    const formattedFriends = friends.map(
-      ({ _id, firstName, lastName, occupation,skills, location, picturePath }) => {
-        return { _id, firstName, lastName, occupation,skills, location, picturePath };
+    const formattedConnections = connections.map(
+      ({ _id, firstName, lastName, occupation,skills,experience,education, location, picturePath }) => {
+        return { _id, firstName, lastName, occupation,skills,experience, education,location, picturePath };
       }
     );
-    res.status(200).json(formattedFriends);
+    res.status(200).json(formattedConnections);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
 };
 
 /* UPDATE */
-export const addRemoveFriend = async (req, res) => {
+export const addRemoveConnection = async (req, res) => {
   try {
-    const { id, friendId } = req.params;
+    const { id, connectionId } = req.params;
     const user = await User.findById(id);
-    const friend = await User.findById(friendId);
+    const connection = await User.findById(connectionId);
 
-    if (user.friends.includes(friendId)) {
-      user.friends = user.friends.filter((id) => id !== friendId);
-      friend.friends = friend.friends.filter((id) => id !== id);
+    if (user.connections.includes(connectionId)) {
+      user.connections = user.connections.filter((id) => id !== connectionId);
+      connection.connections = connection.connections.filter((id) => id !== id);
     } else {
-      user.friends.push(friendId);
-      friend.friends.push(id);
+      user.connections.push(connectionId);
+      connection.connections.push(id);
     }
     await user.save();
-    await friend.save();
+    await connection.save();
 
-    const friends = await Promise.all(
-      user.friends.map((id) => User.findById(id))
+    const connections = await Promise.all(
+      user.connections.map((id) => User.findById(id))
     );
-    const formattedFriends = friends.map(
+    const formattedConnections = connections.map(
       ({ _id, firstName, lastName, occupation,skills, location, picturePath }) => {
         return { _id, firstName, lastName, occupation, skills,location, picturePath };
       }
     );
 
-    res.status(200).json(formattedFriends);
+    res.status(200).json(formattedConnections);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }

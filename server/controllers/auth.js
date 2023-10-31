@@ -11,10 +11,12 @@ export const register = async (req, res) => {
       email,
       password,
       picturePath,
-      friends,
+      connections,
       location,
       occupation,
       skills,
+      experience,
+      education,
     } = req.body;
 
     const salt = await bcrypt.genSalt();
@@ -26,10 +28,12 @@ export const register = async (req, res) => {
       email,
       password: passwordHash,
       picturePath,
-      friends,
+      connections,
       location,
       occupation,
       skills,
+      experience,
+      education,
       viewedProfile: Math.floor(Math.random() * 10000),
       impressions: Math.floor(Math.random() * 10000),
     });
@@ -39,7 +43,6 @@ export const register = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
 /* LOGGING IN */
 export const login = async (req, res) => {
   try {

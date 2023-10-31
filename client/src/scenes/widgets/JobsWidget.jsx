@@ -1,45 +1,45 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPosts } from "state";
-import PostWidget from "./PostWidget";
+import { setJobs } from "state";
+import JobWidget from "./JobWidget";
 
-const PostsWidget = ({ userId, isProfile = false }) => {
+const JobsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
-  const posts = useSelector((state) => state.posts);
+  const jobs = useSelector((state) => state.jobs);
   const token = useSelector((state) => state.token);
 
-  const getPosts = async () => {
-    const response = await fetch("http://localhost:3001/posts", {
+  const getJobs = async () => {
+    const response = await fetch("http://localhost:3001/jobs", {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await response.json();
-    dispatch(setPosts({ posts: data }));
+    dispatch(setJobs({ jobs: data }));
   };
 
-  const getUserPosts = async () => {
+  const getUserJobs = async () => {
     const response = await fetch(
-      `http://localhost:3001/posts/${userId}/posts`,
+      `http://localhost:3001/jobs/${userId}/jobs`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       }
     );
     const data = await response.json();
-    dispatch(setPosts({ posts: data }));
+    dispatch(setJobs({ jobs: data }));
   };
 
   useEffect(() => {
     if (isProfile) {
-      getUserPosts();
+      getUserJobs();
     } else {
-      getPosts();
+      getJobs();
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <>{console.log(posts)}
-      {posts.map(
+    <>
+      {jobs.map(
         ({
           _id,
           userId,
@@ -52,10 +52,10 @@ const PostsWidget = ({ userId, isProfile = false }) => {
           likes,
           comments,
         }) => (
-          <PostWidget
+          <JobWidget
             key={_id}
-            postId={_id}
-            postUserId={userId}
+            jobIdobId={_id}
+            jobUserId={userId}
             name={`${firstName} ${lastName}`}
             description={description}
             location={location}
@@ -63,11 +63,14 @@ const PostsWidget = ({ userId, isProfile = false }) => {
             userPicturePath={userPicturePath}
             likes={likes}
             comments={comments}
+            sx={{
+              maxWidth: "70%", // Adjust the maximum width of the image
+              maxHeight: "150px", // Adjust the maximum height of the image
+            }}
           />
         )
       )}
     </>
   );
-};
-
-export default PostsWidget;
+      }
+export default JobsWidget;
